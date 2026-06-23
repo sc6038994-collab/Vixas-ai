@@ -1,0 +1,534 @@
+vixas-ai/
+├── public/              # Static assets (favicons, manifest)
+├── src/
+│   ├── assets/          # Global images, fonts, icons
+│   ├── components/      # Reusable UI elements
+│   ├── css/             # Global styles and modular CSS
+│   ├── js/              # Firebase config and global scripts
+│   ├── pages/           # Individual page entry points
+│   ├── index.html       # Main landing page
+│   └── admin/           # Admin-specific files
+├── .firebaserc          # Firebase project configuration
+├── firebase.json        # Firebase hosting rules
+└── package.json         # Project dependencies (optional)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vixas AI | Future Intelligence</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">VIXAS<span>AI</span></div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="login.html" class="btn-login">Login</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Intelligence Evolved.</h1>
+        <p>Deploy cutting-edge neural models with the Vixas AI engine.</p>
+        <button class="btn-primary">Initialize Platform</button>
+    </header>
+
+    <section id="features" class="features">
+        <h2>Core Capabilities</h2>
+        <div class="grid">
+            <div class="card"><h3>Neural Synthesis</h3></div>
+            <div class="card"><h3>Predictive Analytics</h3></div>
+            <div class="card"><h3>Automated Logic</h3></div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 Vixas AI Technologies. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
+:root {
+    --bg-dark: #050505;
+    --neon-blue: #00f2ff;
+    --neon-purple: #9d00ff;
+    --text-light: #e0e0e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg-dark); color: var(--text-light); font-family: 'Segoe UI', sans-serif; }
+
+.navbar { display: flex; justify-content: space-between; padding: 2rem; border-bottom: 1px solid var(--neon-purple); }
+.logo { font-weight: bold; letter-spacing: 2px; color: var(--neon-blue); }
+
+.hero { height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.hero h1 { font-size: 4rem; background: linear-gradient(to right, var(--neon-blue), var(--neon-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; padding: 4rem; }
+.card { padding: 2rem; border: 1px solid var(--neon-blue); background: rgba(0, 242, 255, 0.05); transition: 0.3s; }
+.card:hover { transform: translateY(-10px); border-color: var(--neon-purple); }
+
+.btn-primary { background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 1rem 2rem; cursor: pointer; transition: 0.3s; }
+.btn-primary:hover { background: var(--neon-blue); color: var(--bg-dark); }
+
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2.5rem; }
+}document.addEventListener('DOMContentLoaded', () => {
+    // Add scroll reveal animation or interactivity here
+    console.log("Vixas AI Engine Initialized.");
+
+    const btn = document.querySelector('.btn-primary');
+    btn.addEventListener('click', () => {
+        window.location.href = 'dashboard.html';
+    });
+});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vixas AI | Authentication</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h2 id="auth-title">Welcome to Vixas</h2>
+        <form id="auth-form">
+            <input type="email" id="email" placeholder="Neural ID (Email)" required>
+            <input type="password" id="password" placeholder="Encryption Key (Password)" required>
+            <button type="submit" id="main-btn">Login</button>
+        </form>
+        <button id="google-btn">Login with Nexus (Google)</button>
+        <p id="toggle-text">New user? <span id="toggle-form">Create Account</span></p>
+    </div>
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>
+body { background: #050505; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+.auth-container { 
+    background: rgba(20, 20, 20, 0.8); 
+    padding: 2.5rem; 
+    border: 1px solid #00f2ff; 
+    width: 100%; 
+    max-width: 400px;
+    text-align: center;
+}
+input { 
+    width: 100%; padding: 1rem; margin: 0.5rem 0; 
+    background: #111; border: 1px solid #333; color: #fff; 
+}
+#main-btn { width: 100%; padding: 1rem; background: #00f2ff; border: none; margin-top: 1rem; cursor: pointer; }
+#google-btn { width: 100%; padding: 1rem; background: transparent; border: 1px solid #9d00ff; color: #9d00ff; margin-top: 1rem; cursor: pointer; }
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-auth.js";
+
+const firebaseConfig = { /* Your Firebase Config Object */ };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
+
+// Logic to handle Login/Signup toggle
+const authForm = document.getElementById('auth-form');
+let isLogin = true;
+
+authForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        if (isLogin) {
+            await signInWithEmailAndPassword(auth, email, password);
+            window.location.href = 'dashboard.html';
+        } else {
+            await createUserWithEmailAndPassword(auth, email, password);
+            alert("Account initialized!");
+        }
+    } catch (error) {
+        alert(error.message);
+    }
+});
+
+document.getElementById('google-btn').addEventListener('click', () => {
+    signInWithPopup(auth, provider).then(() => window.location.href = 'dashboard.html');
+});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vixas AI | Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <div class="brand">VIXAS<span>AI</span></div>
+            <nav>
+                <a href="#" class="active">Overview</a>
+                <a href="#">Neural Tools</a>
+                <a href="#">History</a>
+                <a href="#">Settings</a>
+            </nav>
+            <div class="subscription-status">
+                <p>Plan: <strong>Cyber-Pro</strong></p>
+                <div class="bar"><div class="progress"></div></div>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header>
+                <h1>Welcome, User</h1>
+                <div class="user-profile"><span>Credits: 2,450</span></div>
+            </header>
+
+            <section class="quick-access">
+                <div class="card"><h3>Generate Image</h3></div>
+                <div class="card"><h3>Code Analysis</h3></div>
+                <div class="card"><h3>Predict Model</h3></div>
+            </section>
+
+            <section class="history">
+                <h2>Recent Generations</h2>
+                <div class="table-container">
+                    <table>
+                        <tr><th>Task</th><th>Status</th><th>Date</th></tr>
+                        <tr><td>Vector Synthesis</td><td>Complete</td><td>2026-06-24</td></tr>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
+:root {
+    --bg-dark: #050505;
+    --sidebar-bg: #0a0a0a;
+    --neon-cyan: #00f2ff;
+    --text-dim: #888;
+}
+
+body { background: var(--bg-dark); color: #fff; font-family: 'Inter', sans-serif; margin: 0; }
+.dashboard-wrapper { display: flex; min-height: 100vh; }
+
+/* Sidebar */
+.sidebar { width: 250px; background: var(--sidebar-bg); border-right: 1px solid #222; padding: 2rem; }
+.brand { color: var(--neon-cyan); font-weight: bold; margin-bottom: 3rem; }
+.sidebar nav a { display: block; color: var(--text-dim); text-decoration: none; margin-bottom: 1.5rem; }
+.sidebar nav a.active { color: #fff; border-left: 3px solid var(--neon-cyan); padding-left: 1rem; }
+
+/* Main Content */
+.content { flex: 1; padding: 3rem; }
+.quick-access { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 3rem; }
+.card { background: #111; padding: 2rem; border: 1px solid #222; cursor: pointer; transition: 0.3s; }
+.card:hover { border-color: var(--neon-cyan); }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dashboard-wrapper { flex-direction: column; }
+    .sidebar { width: 100%; }
+    .quick-access { grid-template-columns: 1fr; }
+}// dashboard.js - Firebase integration logic
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-firestore.js";
+
+const auth = getAuth();
+const db = getFirestore();
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        // Fetch user metadata from Firestore
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+            document.querySelector('.user-profile span').innerText = `Credits: ${docSnap.data().credits}`;
+        }
+    } else {
+        window.location.href = 'login.html';
+    }<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/studio.css">
+    <title>Vixas AI | Studio</title>
+</head>
+<body>
+    <div class="studio-wrapper">
+        <aside class="control-panel">
+            <h2>Neural Studio</h2>
+            <div class="input-group">
+                <label>Prompt</label>
+                <textarea id="prompt" placeholder="Describe your vision..."></textarea>
+            </div>
+            <div class="action-grid">
+                <button onclick="process('generate')">Generate</button>
+                <button onclick="process('upscale')">Upscale</button>
+                <button onclick="process('remove-bg')">Remove BG</button>
+            </div>
+            <div id="loader" class="hidden">Initializing Neural Engine...</div>
+        </aside>
+
+        <main class="canvas-area">
+            <div id="result-display" class="placeholder">
+                <p>Output Stream Ready</p>
+            </div>
+            <div class="gallery" id="gallery">
+                <!-- Recent generations will appear here -->
+            </div>
+        </main>
+    </div>
+    <script src="js/studio.js"></script>
+</body>
+</html>
+:root {
+    --bg-deep: #050505;
+    --neon-blue: #00f2ff;
+    --neon-purple: #9d00ff;
+    --panel-bg: rgba(20, 20, 20, 0.9);
+}
+
+.studio-wrapper { display: grid; grid-template-columns: 350px 1fr; height: 100vh; background: var(--bg-deep); }
+.control-panel { background: var(--panel-bg); padding: 2rem; border-right: 1px solid var(--neon-blue); }
+.canvas-area { padding: 2rem; display: flex; flex-direction: column; gap: 2rem; }
+
+#result-display { 
+    height: 60vh; border: 2px dashed var(--neon-purple); 
+    display: flex; align-items: center; justify-content: center; color: var(--neon-purple); 
+}
+
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; }
+button { padding: 1rem; background: transparent; border: 1px solid var(--neon-blue); color: #fff; cursor: pointer; }
+button:hover { background: var(--neon-blue); color: #000; }
+
+.hidden { display: none; }
+.loader { animation: pulse 1.5s infinite; color: var(--neon-blue); }
+
+@keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+async function process(action) {
+    const loader = document.getElementById('loader');
+    const prompt = document.getElementById('prompt').value;
+    
+    loader.classList.remove('hidden');
+    
+    // Simulate AI Processing
+    setTimeout(() => {
+        loader.classList.add('hidden');
+        const img = document.createElement('img');
+        img.src = 'path_to_generated_image.jpg'; // API response placeholder
+        img.className = 'generated-thumb';
+        document.getElementById('gallery').appendChild(img);
+    }, 3000);
+}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vixas AI | Audio Studio</title>
+    <link rel="stylesheet" href="css/studio.css">
+</head>
+<body>
+    <div class="studio-wrapper">
+        <aside class="control-panel">
+            <h2>Audio Engine</h2>
+            
+            <div class="input-group">
+                <label>Voice Synthesis</label>
+                <select id="voice-select">
+                    <option>Neural Nexus (Deep Male)</option>
+                    <option>Cyber Synth (Soft Female)</option>
+                </select>
+                <textarea id="audio-prompt" placeholder="Enter text to synthesize..."></textarea>
+            </div>
+
+            <div class="action-grid">
+                <button onclick="processAudio('tts')">Synthesize</button>
+                <button onclick="processAudio('clone')">Clone Voice</button>
+                <button onclick="processAudio('enhance')">Enhance</button>
+            </div>
+        </aside>
+
+        <main class="canvas-area">
+            <div class="audio-player-box">
+                <p>Spectral Visualization</p>
+                <div id="waveform" class="waveform-placeholder"></div>
+                <audio id="audio-output" controls></audio>
+                <a id="download-link" class="hidden">Download Audio File</a>
+            </div>
+        </main>
+    </div>
+    <script src="js/audio-studio.js"></script>
+</body>
+</html>
+.audio-player-box { 
+    border: 1px solid var(--neon-blue); 
+    padding: 2rem; 
+    background: rgba(0, 242, 255, 0.05);
+    text-align: center;
+}
+.waveform-placeholder { 
+    height: 150px; 
+    background: #000; 
+    margin: 1rem 0; 
+    border: 1px solid #333; 
+}
+audio { width: 100%; margin-top: 1rem; filter: invert(1) hue-rotate(180deg); }
+#download-link { 
+    display: inline-block; 
+    margin-top: 1rem; 
+    color: var(--neon-blue); 
+    text-decoration: none; 
+    border: 1px solid var(--neon-blue); 
+    padding: 0.5rem 1rem;
+}
+async function processAudio(type) {
+    const output = document.getElementById('audio-output');
+    const download = document.getElementById('download-link');
+    
+    // Simulate API request to backend AI service
+    console.log(`Processing ${type}...`);
+    
+    // Placeholder for actual blob URL from backend
+    // In production, replace with: output.src = URL.createObjectURL(blob);
+    output.src = "path_to_mock_audio.mp3"; 
+    
+    download.classList.remove('hidden');
+    download.href = output.src;
+    download.download = "vixas_output.mp3";
+}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vixas AI | Subscription Tiers</title>
+    <link rel="stylesheet" href="css/pricing.css">
+</head>
+<body>
+    <div class="pricing-container">
+        <h1>Choose Your Neural Path</h1>
+        <div class="toggle-container">
+            <span>Monthly</span>
+            <input type="checkbox" id="billing-toggle">
+            <span>Yearly (Save 20%)</span>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="plan" data-price="0,0"><h3>Free</h3><p>$0/mo</p><button>Get Started</button></div>
+            <div class="plan" data-price="29,280"><h3>Basic</h3><p>$29/mo</p><button>Select Plan</button></div>
+            <div class="plan popular" data-price="79,750"><h3>Pro</h3><p>$79/mo</p><button>Select Plan</button></div>
+            <div class="plan" data-price="199,1900"><h3>Ultra</h3><p>$199/mo</p><button>Select Plan</button></div>
+        </div>
+    </div>
+    <script src="js/pricing.js"></script>
+</body>
+</html>
+:root { --neon-blue: #00f2ff; --bg-dark: #050505; }
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; padding: 3rem; }
+.plan { background: #111; padding: 2rem; border: 1px solid #333; text-align: center; }
+.plan.popular { border: 2px solid var(--neon-blue); transform: scale(1.05); }
+.toggle-container { display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; }
+button { background: transparent; border: 1px solid var(--neon-blue); color: white; padding: 0.8rem; cursor: pointer; }
+const toggle = document.getElementById('billing-toggle');
+const plans = document.querySelectorAll('.plan');
+
+toggle.addEventListener('change', () => {
+    plans.forEach(plan => {
+        const prices = plan.getAttribute('data-price').split(',');
+        const displayPrice = toggle.checked ? prices[1] : prices[0];
+        plan.querySelector('p').innerText = `$${displayPrice}/${toggle.checked ? 'yr' : 'mo'}`;
+    });<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vixas AI | Admin Console</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h2>Vixas Admin</h2>
+            <nav>
+                <a href="#dashboard">Dashboard</a>
+                <a href="#users">Users</a>
+                <a href="#subscriptions">Subscriptions</a>
+                <a href="#moderation">Content Moderation</a>
+            </nav>
+        </aside>
+
+        <main class="admin-content">
+            <header>
+                <h1>System Overview</h1>
+                <div class="stats-row">
+                    <div class="stat-card"><h3>$12,400</h3><p>Monthly Revenue</p></div>
+                    <div class="stat-card"><h3>8,290</h3><p>Active Users</p></div>
+                    <div class="stat-card"><h3>142</h3><p>Flagged Items</p></div>
+                </div>
+            </header>
+
+            <section class="admin-table">
+                <table>
+                    <thead><tr><th>User ID</th><th>Plan</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="user-list">
+                        <tr><td>#8821</td><td>Ultra</td><td>Active</td><td><button>Suspend</button></td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
+:root { --admin-bg: #0a0a0a; --accent-red: #ff4d4d; --neon-blue: #00f2ff; }
+.admin-layout { display: flex; min-height: 100vh; background: var(--admin-bg); color: #fff; }
+.admin-sidebar { width: 260px; border-right: 1px solid #333; padding: 2rem; }
+.admin-content { flex: 1; padding: 2rem; }
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2rem 0; }
+.stat-card { background: #151515; padding: 1.5rem; border: 1px solid #222; }
+table { width: 100%; border-collapse: collapse; background: #111; }
+th, td { padding: 1rem; border: 1px solid #222; text-align: left; }
+button { background: transparent; border: 1px solid var(--accent-red); color: var(--accent-red); cursor: pointer; }
+// Integration with Firebase Firestore for Admin Operations
+import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-firestore.js";
+
+const db = getFirestore();
+
+async function loadAdminData() {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    const tableBody = document.getElementById('user-list');
+    
+    querySnapshot.forEach((doc) => {
+        const user = doc.data();
+        tableBody.innerHTML += `<tr>
+            <td>${doc.id}</td>
+            <td>${user.plan}</td>
+            <td>${user.active ? 'Active' : 'Suspended'}</td>
+            <td><button onclick="toggleUser('${doc.id}')">Toggle Status</button></td>
+        </tr>`;
+    });
+}
+
+window.toggleUser = async (uid) => {
+    // Admin logic to update Firestore user status
+    await updateDoc(doc(db, "users", uid), { active: false });
+    alert("User status updated.");
+};Prepare the Vixas AI website for GitHub Pages deployment.
+
+Requirements:
+
+- Optimize all files
+- SEO setup
+- Sitemap
+- Robots.txt
+- PWA support
+- Manifest file
+- Offline support
+- Deployment guide
+
+});
+
+
+
+});
+
+
